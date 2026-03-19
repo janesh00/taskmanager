@@ -349,8 +349,8 @@
   <div id="auth-page" class="page active">
     <div class="auth-box">
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-        <button class="auth-tab" onclick="switchTab('register')">Register</button>
+        <button class="auth-tab active" onclick="switchTab('login', this)">Login</button>
+        <button class="auth-tab" onclick="switchTab('register', this)">Register</button>
       </div>
 
       <div id="auth-alert"></div>
@@ -475,9 +475,9 @@
   }
 
   // ── Auth Tab ──────────────────────────────────────
-  function switchTab(tab) {
+  function switchTab(tab, btn) {
     document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
     document.getElementById('login-form').style.display    = tab === 'login'    ? 'block' : 'none';
     document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
     clearAlert('auth-alert');
@@ -499,9 +499,7 @@
     try {
       const res = await api('POST', '/register', body);
       showAlert('auth-alert', 'success', `Account created! Please log in, ${res.username}.`);
-      switchTab('login');
-      document.querySelectorAll('.auth-tab')[0].classList.add('active');
-      document.querySelectorAll('.auth-tab')[1].classList.remove('active');
+      switchTab('login', document.querySelectorAll('.auth-tab')[0]);
     } catch (err) {
       showAlert('auth-alert', 'error', err.message);
     } finally {
