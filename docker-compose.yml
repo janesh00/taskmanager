@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
+      - DATABASE_URL=sqlite:///./taskmanager.db
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    volumes:
+      - sqlite_data:/app
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
